@@ -26,4 +26,8 @@
   <ItemGroup>
     <ProjectReference Include="..\UrlShortener.Domain\UrlShortener.Domain.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CQRS\ShorteningUrls\Queries\" />
+  </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using UrlShortener.Application.Common.DbContexts;
 using UrlShortener.Domain.Entities;
+using UrlShortener.Persistence.Data.Configurations;
 using UrlShortener.Persistence.Data.Configurations.Identity;
 
 namespace UrlShortener.Persistence.Data.Contexts {
@@ -12,6 +13,7 @@ namespace UrlShortener.Persistence.Data.Contexts {
         protected override void OnModelCreating(ModelBuilder builder) {
             builder.ApplyConfiguration(new ApplicationUserConfiguration());
             builder.ApplyConfiguration(new ApplicationRoleConfiguration());
+            builder.ApplyConfiguration(new ShortenedUrlEntityConfiguration());
 
             base.OnModelCreating(builder);
         }

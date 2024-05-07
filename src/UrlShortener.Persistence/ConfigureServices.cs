@@ -2,11 +2,12 @@
 using Microsoft.Extensions.Configuration;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.AspNetCore.SignalR;
 using UrlShortener.Application.Common.DbContexts;
 using UrlShortener.Persistence.Data.Contexts;
 using UrlShortener.Persistence.Common.Extensions;
 using Newtonsoft.Json;
+using UrlShortener.Application.Common.Interfaces;
+using UrlShortener.Persistence.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -26,6 +27,10 @@ public static class ConfigureServices {
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
         services.TryAddSingleton((provider) => JsonSerializer.CreateDefault());
+
+        services.TryAddScoped<IJwtService, JwtService>();
+        services.TryAddScoped<IDateTimeService, DateTimeService>();
+        services.TryAddScoped<IHashGenerator, ShortHashGenerator>();
 
         return services;
     }

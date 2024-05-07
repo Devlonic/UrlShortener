@@ -1,11 +1,12 @@
 using Microsoft.OpenApi.Models;
-
+using UrlShortener.Persistence.Data.Seeders;
 var builder = WebApplication.CreateBuilder(args);
 
 // get configuration
 var configuration = builder.Configuration;
 
 // Add Clean-Architecture layers
+builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(configuration);
 
 // Add services to the container.
@@ -51,5 +52,7 @@ app.UseAuthorization();
 app.UseAuthentication();
 
 app.MapControllers();
+
+app.SeedData();
 
 app.Run();

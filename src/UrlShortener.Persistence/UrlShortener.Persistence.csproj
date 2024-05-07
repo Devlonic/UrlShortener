@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\DbContexts\" />
+    <ProjectReference Include="..\UrlShortener.Application\UrlShortener.Application.csproj" />
+    <ProjectReference Include="..\UrlShortener.Domain\UrlShortener.Domain.csproj" />
   </ItemGroup>
 </Project>

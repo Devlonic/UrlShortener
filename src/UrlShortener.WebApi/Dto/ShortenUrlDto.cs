@@ -8,7 +8,7 @@ namespace UrlShortener.WebApi.Dto {
 
         public void Mapping(Profile profile) {
             profile.CreateMap<ShortenUrlDto, ShortenLinkCommand>()
-                .ForMember(command => command.FullLink, opt => opt.MapFrom(dto => dto.FullLink));
+                .ForMember(command => command.FullLink, opt => opt.MapFrom(dto => new Uri(dto.FullLink)));
         }
     }
 }

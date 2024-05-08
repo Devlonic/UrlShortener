@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FB8A44B3-EC64-4156-B7F7-8F0CB67BF5CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UrlShortener.Mvc", "src\UrlShortener.Mvc\UrlShortener.Mvc.csproj", "{8351F333-441C-4F69-AFF5-B3CC6734E562}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UrlShortener.Mvc", "src\UrlShortener.Mvc\UrlShortener.Mvc.csproj", "{8351F333-441C-4F69-AFF5-B3CC6734E562}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -78,6 +78,7 @@ if ( !app.Environment.IsDevelopment() ) {
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
@@ -95,7 +96,6 @@ if ( app.Environment.IsDevelopment() ) {
 
 app.UseCors("AllowAll");
 
-app.UseAuthorization();
 app.UseAuthentication();
 
 app.MapControllers();

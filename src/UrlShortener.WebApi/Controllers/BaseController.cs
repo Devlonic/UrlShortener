@@ -1,9 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using UrlShortener.WebApi.Common.Exceptions;
+using UrlShortener.WebAPI.Filters;
 
 namespace UrlShortener.WebApi.Controllers {
     [ApiController]
+    [ApiExceptionFilter]
+    [Route("api/[controller]/[action]")]
     public abstract class BaseController : ControllerBase {
         private IMediator mediator = null!;
 

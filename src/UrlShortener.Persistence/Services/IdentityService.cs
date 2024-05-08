@@ -22,7 +22,7 @@ namespace UrlShortener.Persistence.Services {
             var result = await _userManager.AddToRoleAsync(user, roleName);
         }
 
-        public async Task AddToRoleAsync(Guid userId, string roleName) {
+        public async Task AddToRoleAsync(int userId, string roleName) {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if ( user == null )
                 throw new NotFoundException(userId.ToString(), nameof(ApplicationUser));
@@ -67,7 +67,7 @@ namespace UrlShortener.Persistence.Services {
             };
         }
 
-        public async Task<IList<string>> GetUserRolesAsync(Guid userId) {
+        public async Task<IList<string>> GetUserRolesAsync(int userId) {
             ApplicationUser? user = await _userManager.FindByIdAsync(userId.ToString());
             if ( user == null )
                 throw new NotFoundException(userId.ToString(), nameof(ApplicationUser));
@@ -76,7 +76,7 @@ namespace UrlShortener.Persistence.Services {
 
             return roles;
         }
-        public async Task<UserLookup> GetUserLookupAsync(Guid userId) {
+        public async Task<UserLookup> GetUserLookupAsync(int userId) {
             ApplicationUser? user = await _userManager.FindByIdAsync(userId.ToString());
             if ( user == null )
                 throw new NotFoundException(userId.ToString(), nameof(ApplicationUser));

@@ -6,7 +6,7 @@ using UrlShortener.Persistence.Data.Configurations;
 using UrlShortener.Persistence.Data.Configurations.Identity;
 
 namespace UrlShortener.Persistence.Data.Contexts {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>, IApplicationDbContext {
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>, IApplicationDbContext {
         public DbSet<ShortenedUrlEntity> ShortenedUrls { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }

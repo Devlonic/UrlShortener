@@ -45,19 +45,11 @@ namespace UrlShortener.Persistence.Common.Extensions {
                 options.Events = new JwtBearerEvents {
                     OnMessageReceived = context => {
                         // ignore "Bearer" preffix
-                        context.Token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                        //context.Token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
                         // if token already taken from headers
                         if ( !string.IsNullOrEmpty(context.Token) )
                             return Task.CompletedTask;
-
-                        // signalr authentication setup
-                        // extract token from query instead http headers
-                        var signalrHubAccessToken = context.Request.Query["access_token"];
-                        var path = context.HttpContext.Request.Path;
-                        if ( !string.IsNullOrEmpty(path) && path.StartsWithSegments("/signalr") ) {
-                            context.Token = signalrHubAccessToken.ToString().Replace("Bearer ", "");
-                        }
 
                         return Task.CompletedTask;
                     }

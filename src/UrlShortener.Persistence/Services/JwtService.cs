@@ -16,7 +16,7 @@ namespace UrlShortener.Persistence.Services {
             _dateTimeService = dateTimeService;
         }
 
-        public string GenerateToken(Guid userId, UserLookup user) {
+        public string GenerateToken(int userId, UserLookup user) {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("Jwt:Key") ?? throw new Exception("Jwt:Key not found")));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
@@ -46,43 +46,6 @@ namespace UrlShortener.Persistence.Services {
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        public string GenerateTokenWithSecretPhrase(string secretPhrase) {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretPhrase));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                _configuration.GetValue<string>("Jwt:Issuer"),
-                _configuration.GetValue<string>("Jwt:Audience"),
-                null,
-                expires: _dateTimeService.Now.AddHours(_configuration.GetValue<int>("Jwt:ExpiresAfterHours")),
-                signingCredentials: credentials
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        public bool VerifyTokenWithSecretPhrase(string token, string secretPhrase) {
-            try {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.UTF8.GetBytes(secretPhrase);
-
-                tokenHandler.ValidateToken(token, new TokenValidationParameters {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidIssuer = _configuration.GetValue<string>("Jwt:Issuer"),
-                    ValidAudience = _configuration.GetValue<string>("Jwt:Audience"),
-                    ClockSkew = TimeSpan.Zero
-                }, out _);
-
-                return true;
-            }
-            catch {
-                return false;
-            }
         }
     }
 }

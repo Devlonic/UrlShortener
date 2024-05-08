@@ -1,4 +1,7 @@
 using Microsoft.OpenApi.Models;
+using System.Reflection;
+using UrlShortener.Application.Common.Mappings;
+using UrlShortener.Persistence.Data.Contexts;
 using UrlShortener.Persistence.Data.Seeders;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,10 +12,17 @@ var configuration = builder.Configuration;
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(configuration);
 
+// setup automapper
+builder.Services.AddAutoMapper(config => {
+    config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
+    config.AddProfile(new AssemblyMappingProfile(typeof(ApplicationDbContext).Assembly));
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(o => {
     o.AddSecurityDefinition("Bearer",
         new OpenApiSecurityScheme {
@@ -23,11 +33,27 @@ builder.Services.AddSwaggerGen(o => {
             Scheme = "Bearer",
         });
 
+    o.AddSecurityRequirement(new OpenApiSecurityRequirement {
+        {
+            new OpenApiSecurityScheme
+            {
+                Name = "Bearer",
+                In = ParameterLocation.Header,
+                Reference = new OpenApiReference
+                {
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
+                }
+            },
+            new List<string>()
+        }
+    });
     o.SwaggerDoc("v1", new OpenApiInfo() {
         Title = "UrlShortener API - v1",
         Version = "v1"
     });
 });
+
 
 // enable CORS to all sources
 builder.Services.AddCors(options => {

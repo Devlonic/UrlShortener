@@ -5,8 +5,8 @@ namespace UrlShortener.Application.Common.Interfaces {
     public interface IIdentityService {
         Task<UserLookup> CreateUserAsync(string password, string email, string username);
         Task CreateRoleAsync(string roleName);
-        Task AddToRoleAsync(Guid userId, string roleName);
-        Task<IList<string>> GetUserRolesAsync(Guid userId);
-        Task<UserLookup> GetUserLookupAsync(Guid userId);
+        Task AddToRoleAsync(int userId, string roleName);
+        Task<IList<string>> GetUserRolesAsync(int userId);
+        Task<UserLookup> GetUserLookupAsync(int userId);
     }
 }

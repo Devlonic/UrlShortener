@@ -8,6 +8,8 @@ using UrlShortener.Persistence.Common.Extensions;
 using Newtonsoft.Json;
 using UrlShortener.Application.Common.Interfaces;
 using UrlShortener.Persistence.Services;
+using Microsoft.AspNetCore.SignalR;
+using UrlShortener.Persistence.Data.Providers;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -27,6 +29,7 @@ public static class ConfigureServices {
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
         services.TryAddSingleton((provider) => JsonSerializer.CreateDefault());
+        services.TryAddSingleton<IUserIdProvider, ApplicationUserIdProvider>();
 
         services.TryAddScoped<IJwtService, JwtService>();
         services.TryAddScoped<IDateTimeService, DateTimeService>();

@@ -6,6 +6,6 @@ namespace UrlShortener.Domain.Entities {
         public string? ForwardToUrl { get; set; }
 
         public ApplicationUser? Creator { get; set; }
-        public Guid? CreatorId { get; set; }
+        public int? CreatorId { get; set; }
     }
 }

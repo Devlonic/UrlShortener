@@ -83,6 +83,10 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.UseEndpoints(e => {
+    e.MapControllerRoute(name: "ShortUrl", pattern: "{hash}", defaults: new { controller = "Home", action = "Short" });
+});
+
 // Configure the HTTP request pipeline.
 if ( app.Environment.IsDevelopment() ) {
     app.UseSwagger();

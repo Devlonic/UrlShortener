@@ -1,6 +1,8 @@
-﻿using MediatR;
+﻿using Ardalis.GuardClauses;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using UrlShortener.Application.CQRS.ShorteningUrls.Queries;
 using UrlShortener.Mvc.Common.Exceptions;
 using UrlShortener.Mvc.Models;
 
@@ -31,6 +33,21 @@ namespace UrlShortener.Mvc.Controllers {
 
         public IActionResult Privacy() {
             return View();
+        }
+
+        public async Task<IActionResult> Short([FromRoute] string hash) {
+            try {
+                var query = new ResolveShortUrlQuery() {
+                    ShortHash = hash
+                };
+                var result = await Mediator.Send(query);
+                return Redirect(result.FullUrl!);
+            }
+            catch ( NotFoundException ) {
+                ViewBag.LinkBroken = true;
+                ViewBag.Link = hash;
+                return View(nameof(Index));
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

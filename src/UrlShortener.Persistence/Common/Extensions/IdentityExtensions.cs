@@ -45,11 +45,17 @@ namespace UrlShortener.Persistence.Common.Extensions {
                 options.Events = new JwtBearerEvents {
                     OnMessageReceived = context => {
                         // ignore "Bearer" preffix
-                        //context.Token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                        context.Token = context.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
 
                         // if token already taken from headers
                         if ( !string.IsNullOrEmpty(context.Token) )
                             return Task.CompletedTask;
+
+                        // extract token from cookie
+                        var x = context.Request.Cookies["Authentication"];
+                        if ( x is not null )
+                            context.Token = x.Replace("Bearer ", "");
 
                         return Task.CompletedTask;
                     }

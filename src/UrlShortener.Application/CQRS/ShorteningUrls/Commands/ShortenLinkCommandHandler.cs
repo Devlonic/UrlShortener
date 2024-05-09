@@ -26,7 +26,9 @@ namespace UrlShortener.Application.CQRS.ShorteningUrls.Commands {
             await applicationDbContext.SaveChangesAsync(cancellationToken);
 
             return new ShortenedUrlLookup() {
-                ShortenedUrl = newLink.ShortenedUrl
+                ShortenedUrl = newLink.ShortenedUrl,
+                FullUrl = newLink.ForwardToUrl,
+                CreatedById = newLink.CreatorId
             };
         }
     }

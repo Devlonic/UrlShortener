@@ -1,30 +1,80 @@
-﻿class ReferencesList extends React.Component {
+﻿class AddNewReference extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            fullLink: ''
+        }
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({ fullLink: event.target.value });
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        console.log(event, { fullLink: this.state.fullLink });
+
+        axios.post("/api/Shorten/ShortenUrl", this.state).then((result) => {
+            this.props.onAdd(result.data);
+        });
+    }
+
+    render() {
+        return <>
+            <form className="mb-3" onSubmit={this.handleSubmit}>
+                <div>
+                    <h2>Add shortcut</h2>
+                </div>
+                <div className="d-flex">
+                    <div className="d-flex mr-3">
+                        <input onChange={this.handleChange} type="url" className="form-control" id="fullLink-input" name="fullLink"></input>
+                    </div>
+                    <button type="submit" className="btn btn-primary">Add</button>
+                </div>
+            </form >
+        </>
+    }
+}
+
+class ReferencesList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             list: []
         }
+        this.addRef = this.addRef.bind(this);
+
     }
     componentDidMount() {
         axios.get("/api/Shorten/GetAllUrls").then((result) => {
             this.setState({ list: result.data });
         });
     }
+
+    addRef(ref) {
+        console.log("added", ref);
+        this.setState({ list: [...this.state.list, ref] });
+    }
+
     render() {
         const viewData = this.state.list.map((url) => (
             <tr key={url.shortenedUrl}>
                 <td>{url.shortenedUrl}</td>
                 <td>{url.fullUrl}</td>
                 <td>{url.createdById}</td>
+                <td>
+                    <button className="btn btn-danger">Remove</button>
+                </td>
             </tr>
         ));
         console.log(this.state.list, viewData);
 
         return (<>
             <div className="onLoad">
-                <a href="/admin/category/create" className="btn btn-success">
-                    Add
-                </a>
+                <AddNewReference onAdd={this.addRef}></AddNewReference>
                 <table className="table">
                     <thead>
                         <tr>

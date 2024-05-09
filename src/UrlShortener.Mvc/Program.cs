@@ -3,8 +3,27 @@ using UrlShortener.Application.Common.Mappings;
 using UrlShortener.Persistence.Data.Contexts;
 using Microsoft.OpenApi.Models;
 using UrlShortener.Persistence.Data.Seeders;
+using Microsoft.AspNetCore.Http;
+using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
+using React.AspNet;
+using JavaScriptEngineSwitcher.V8;
+using UrlShortener.Mvc;
+using React;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+//setup react
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddReact();
+
+//ReactSiteConfiguration.Configuration = new ReactSiteConfiguration()
+//.AddScript("~/Content/main.tsx");
+builder.Services
+    .AddJsEngineSwitcher(options => options.DefaultEngineName = V8JsEngine.EngineName)
+    .AddV8();
+
+//BundleConfig.RegisterBundles();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -75,6 +94,9 @@ var app = builder.Build();
 if ( !app.Environment.IsDevelopment() ) {
     app.UseExceptionHandler("/Home/Error");
 }
+
+app.UseReact(config => {
+});
 app.UseStaticFiles();
 
 app.UseRouting();

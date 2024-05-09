@@ -8,12 +8,14 @@ using UrlShortener.Persistence.Data.Configurations.Identity;
 namespace UrlShortener.Persistence.Data.Contexts {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>, IApplicationDbContext {
         public DbSet<ShortenedUrlEntity> ShortenedUrls { get; set; }
+        public DbSet<AboutEntity> Abouts { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder builder) {
             builder.ApplyConfiguration(new ApplicationUserConfiguration());
             builder.ApplyConfiguration(new ApplicationRoleConfiguration());
             builder.ApplyConfiguration(new ShortenedUrlEntityConfiguration());
+            builder.ApplyConfiguration(new AboutEntityConfiguration());
 
             base.OnModelCreating(builder);
         }

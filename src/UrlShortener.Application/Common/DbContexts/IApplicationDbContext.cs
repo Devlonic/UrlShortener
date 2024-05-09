@@ -5,6 +5,7 @@ using UrlShortener.Domain.Entities;
 namespace UrlShortener.Application.Common.DbContexts {
     public interface IApplicationDbContext {
         DbSet<ShortenedUrlEntity> ShortenedUrls { get; set; }
+        DbSet<AboutEntity> Abouts { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
         EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;

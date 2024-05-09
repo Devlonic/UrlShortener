@@ -6,7 +6,8 @@ namespace UrlShortener.Application.CQRS.Identity.Users.Commands.CreateUser {
             RuleFor(c => c.Password)
                 .NotEmpty()
                 .MinimumLength(8)
-                .MaximumLength(64);
+                .MaximumLength(64)
+                .Equal(u => u.RepeatPassword).WithMessage("Passwords does not matches");
 
             RuleFor(c => c.Username)
                 .NotEmpty()

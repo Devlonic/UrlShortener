@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using UrlShortener.Application.Common.Interfaces;
+using UrlShortener.Domain.Constants;
 
 namespace UrlShortener.Application.CQRS.Identity.Users.Commands.CreateUser {
     public class CreateUserCommnadHandler : IRequestHandler<CreateUserCommand, CreateUserCommandResult> {
@@ -14,6 +15,10 @@ namespace UrlShortener.Application.CQRS.Identity.Users.Commands.CreateUser {
         public async Task<CreateUserCommandResult> Handle(CreateUserCommand request, CancellationToken cancellationToken) {
             var result = await _identityService.CreateUserAsync(
                  request.Password, request.Email, request.Username);
+
+            if ( request.DoesSetAdmin == true )
+                await _identityService.AddToRoleAsync(result.UserId ?? -1, Roles.Administrator);
+            result.Roles.Add(Roles.Administrator);
 
             return new CreateUserCommandResult() {
                 UserId = result.UserId,

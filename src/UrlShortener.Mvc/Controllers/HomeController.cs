@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Authentication;
 using UrlShortener.Application.CQRS.About.Commands.SetAbout;
+using UrlShortener.Application.CQRS.About.Queries.GetAbout;
 using UrlShortener.Application.CQRS.Identity.Users.Commands.SignInUser;
 using UrlShortener.Application.CQRS.ShorteningUrls.Queries;
 using UrlShortener.Domain.Constants;
@@ -45,8 +46,23 @@ namespace UrlShortener.Mvc.Controllers {
 
         [AllowAnonymous]
         [Authorize(Roles = $"{Roles.User},{Roles.Administrator}", AuthenticationSchemes = "Bearer")]
-        public IActionResult About() {
-            return View(new { IsAdmin = User.IsInRole(Roles.Administrator) });
+        public async Task<IActionResult> About() {
+            try {
+                var r = new GetAboutQuery() {
+                    IsAdmin = User.IsInRole(Roles.Administrator)
+                };
+                var result = await Mediator.Send(r);
+                return View(new { IsAdmin = User.IsInRole(Roles.Administrator), AboutInfo = result });
+            }
+            catch ( InvalidCredentialException e ) {
+                ViewBag.LoginError = e.Message;
+                return View();
+            }
+            catch ( Exception e ) {
+                ViewBag.LoginError = "Unknown server error";
+                return View();
+            }
+
         }
 
         [HttpPost]

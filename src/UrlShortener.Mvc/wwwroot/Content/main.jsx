@@ -54,9 +54,11 @@ class ReferencesList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            list: []
+            list: [],
+            lastAdded: null
         }
         this.addRef = this.addRef.bind(this);
+        this.handleDeleteRef = this.handleDeleteRef.bind(this);
 
     }
     componentDidMount() {
@@ -67,17 +69,29 @@ class ReferencesList extends React.Component {
 
     addRef(ref) {
         console.log("added", ref);
-        this.setState({ list: [...this.state.list, ref] });
+        this.setState({ list: [ref, ...this.state.list], lastAdded: ref.shortenedUrl });
+    }
+
+    handleDeleteRef(refId) {
+        //alert("are you sure?" + refId);
+
+        axios.delete(`/api/Shorten/DeleteShortenUrl/${refId}`).then((result) => {
+            this.setState({ list: this.state.list.filter((url) => url.shortenedUrl != refId) });
+        });
     }
 
     render() {
-        const viewData = this.state.list.map((url) => (
+        var currentUserId = getCookie("UserId");
+        var currentUserIsAdmin = (getCookie("Role") ?? "").includes("Administrator");
+        console.log("adm", currentUserIsAdmin);
+        const viewData = this.state.list.map((url, num) => (
             <tr key={url.shortenedUrl}>
-                <td>{url.shortenedUrl}</td>
+                <td><a target="_blank" href={url.shortenedUrl}>{url.shortenedUrl}</a></td>
                 <td>{url.fullUrl}</td>
                 <td>{url.createdById}</td>
                 <td>
-                    <button className="btn btn-danger">Remove</button>
+                    {(currentUserId == url.createdById || currentUserIsAdmin) &&
+                        <button onClick={() => { this.handleDeleteRef(url.shortenedUrl); }} className="btn btn-danger">Remove</button>}
                 </td>
             </tr>
         ));
@@ -85,6 +99,7 @@ class ReferencesList extends React.Component {
 
         return (<>
             <div className="onLoad">
+                {this.state.lastAdded && <p>Your ref is <a href={this.state.lastAdded}>Click</a></p>}
                 {getCookie("Authentication") && <>
                     <AddNewReference onAdd={this.addRef}></AddNewReference>
                 </>}
@@ -113,7 +128,6 @@ class Main extends React.Component {
     render() {
         return (
             <div className="main">
-                React component mounted! ^_^
                 <ReferencesList></ReferencesList>
             </div>
         );

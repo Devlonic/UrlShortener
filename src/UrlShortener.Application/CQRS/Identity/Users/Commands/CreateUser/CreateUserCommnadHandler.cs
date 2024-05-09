@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using System.Linq;
 using UrlShortener.Application.Common.Interfaces;
 using UrlShortener.Domain.Constants;
 
@@ -16,12 +17,14 @@ namespace UrlShortener.Application.CQRS.Identity.Users.Commands.CreateUser {
             var result = await _identityService.CreateUserAsync(
                  request.Password, request.Email, request.Username);
 
-            if ( request.DoesSetAdmin == true )
+            if ( request.DoesSetAdmin == true ) {
                 await _identityService.AddToRoleAsync(result.UserId ?? -1, Roles.Administrator);
-            result.Roles.Add(Roles.Administrator);
+                result.Roles.Add(Roles.Administrator);
+            }
 
             return new CreateUserCommandResult() {
                 UserId = result.UserId,
+                Role = string.Join(",", result.Roles),
                 Token = _jwtService.GenerateToken(result.UserId ?? -1, result),
             };
         }

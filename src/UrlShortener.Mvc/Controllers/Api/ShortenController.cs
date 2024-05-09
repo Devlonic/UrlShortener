@@ -25,9 +25,9 @@ namespace UrlShortener.Mvc.Controllers.Api {
             var result = await Mediator.Send(command);
             return Ok(result);
         }
-        [HttpDelete]
+        [HttpDelete("{hash_id}")]
         [Authorize(Roles = $"{Roles.User},{Roles.Administrator}", AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult<ShortenedUrlLookup>> DeleteShortenUrl([FromBody] string hash_id) {
+        public async Task<ActionResult<ShortenedUrlLookup>> DeleteShortenUrl([FromRoute] string hash_id) {
             var command = new RemoveLinkCommand() {
                 LinkId = hash_id,
                 RequestedId = UserId

@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Diagnostics;
+using System.Linq;
 using System.Security.Authentication;
 using UrlShortener.Application.Common.Exceptions;
 using UrlShortener.Application.CQRS.Identity.Users.Commands.CreateUser;
@@ -42,6 +43,8 @@ namespace UrlShortener.Mvc.Controllers {
                 var command = mapper.Map<SignInUserCommand>(dto);
                 var result = await Mediator.Send(command);
                 Response.Cookies.Append("Authentication", result.Token!);
+                Response.Cookies.Append("Role", string.Join(",", result.User.Roles));
+                Response.Cookies.Append("UserId", result.User.UserId.ToString());
                 return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).Replace("Controller", ""));
             }
             catch ( InvalidCredentialException e ) {
@@ -64,6 +67,8 @@ namespace UrlShortener.Mvc.Controllers {
             try {
                 var command = mapper.Map<CreateUserCommand>(dto);
                 var result = await Mediator.Send(command);
+                Response.Cookies.Append("UserId", result.UserId.ToString());
+                Response.Cookies.Append("Role", result.Role);
                 Response.Cookies.Append("Authentication", result.Token!);
                 return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).Replace("Controller", ""));
             }
@@ -85,6 +90,8 @@ namespace UrlShortener.Mvc.Controllers {
         [HttpGet]
         public IActionResult SignOut() {
             Response.Cookies.Delete("Authentication"); // expire cookie
+            Response.Cookies.Delete("UserId"); // expire cookie
+            Response.Cookies.Delete("Role"); // expire cookie
             return RedirectToAction(nameof(HomeController.Index), nameof(HomeController).Replace("Controller", ""));
         }
     }

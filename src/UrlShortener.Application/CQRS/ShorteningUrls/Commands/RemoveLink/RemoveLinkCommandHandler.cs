@@ -27,7 +27,7 @@ namespace UrlShortener.Application.CQRS.ShorteningUrls.Commands.RemoveLink {
             if ( e is null )
                 throw new NotFoundException(request.LinkId!, nameof(ShortenedUrlEntity));
 
-            var isAdmin = ( await identityService.GetUserRolesAsync(e.CreatorId ?? -1) )
+            var isAdmin = ( await identityService.GetUserRolesAsync(request.RequestedId ?? -1) )
                 .Any((r) => r == Roles.Administrator);
 
             // if requester is not admin and

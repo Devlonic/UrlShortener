@@ -15,6 +15,7 @@ namespace UrlShortener.Application.CQRS.ShorteningUrls.Queries {
         public async Task<IList<ShortenedUrlLookup>> Handle(GetShortUrlsListQuery request, CancellationToken cancellationToken) {
             var result = await applicationDbContext
                 .ShortenedUrls
+                .OrderByDescending(r => r.CreatedAt ?? DateTime.MinValue)
                 .Select(u => new ShortenedUrlLookup() {
                     FullUrl = u.ForwardToUrl,
                     ShortenedUrl = u.ShortenedUrl,

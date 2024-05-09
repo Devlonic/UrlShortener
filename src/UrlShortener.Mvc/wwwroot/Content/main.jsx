@@ -1,8 +1,25 @@
 ﻿class ReferencesList extends React.Component {
-    componentWillMount() {
-        axios.get("/api/shorten/GetAllUrls");
+    constructor(props) {
+        super(props);
+        this.state = {
+            list: []
+        }
+    }
+    componentDidMount() {
+        axios.get("/api/Shorten/GetAllUrls").then((result) => {
+            this.setState({ list: result.data });
+        });
     }
     render() {
+        const viewData = this.state.list.map((url) => (
+            <tr key={url.shortenedUrl}>
+                <td>{url.shortenedUrl}</td>
+                <td>{url.fullUrl}</td>
+                <td>{url.createdById}</td>
+            </tr>
+        ));
+        console.log(this.state.list, viewData);
+
         return (<>
             <div className="onLoad">
                 <a href="/admin/category/create" className="btn btn-success">
@@ -19,7 +36,7 @@
                             <th scope="col"></th>
                         </tr>
                     </thead>
-                    {/*<tbody>{viewData}</tbody>*/}
+                    <tbody>{viewData}</tbody>
                 </table>
                 <ul className="pagination justify-content-center">
                     {/*{paginationData}*/}

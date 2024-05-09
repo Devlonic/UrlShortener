@@ -40,10 +40,6 @@ namespace UrlShortener.Mvc.Controllers {
             return View();
         }
 
-        public IActionResult Privacy() {
-            return View();
-        }
-
         [AllowAnonymous]
         [Authorize(Roles = $"{Roles.User},{Roles.Administrator}", AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> About() {

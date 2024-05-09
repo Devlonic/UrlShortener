@@ -45,7 +45,7 @@ namespace UrlShortener.Persistence.Services {
                 signingCredentials: credentials
                 );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return $"{_configuration.GetValue<string>("Jwt:Scheme")} {new JwtSecurityTokenHandler().WriteToken(token)}";
         }
     }
 }

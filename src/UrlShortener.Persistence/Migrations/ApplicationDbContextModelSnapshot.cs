@@ -125,6 +125,30 @@ namespace UrlShortener.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("UrlShortener.Domain.Entities.AboutEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("EditedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("EditorId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EditorId");
+
+                    b.ToTable("Abouts");
+                });
+
             modelBuilder.Entity("UrlShortener.Domain.Entities.ApplicationRole", b =>
                 {
                     b.Property<int>("Id")
@@ -226,6 +250,9 @@ namespace UrlShortener.Persistence.Migrations
                     b.Property<string>("ShortenedUrl")
                         .HasColumnType("text");
 
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int?>("CreatorId")
                         .HasColumnType("integer");
 
@@ -288,6 +315,15 @@ namespace UrlShortener.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("UrlShortener.Domain.Entities.AboutEntity", b =>
+                {
+                    b.HasOne("UrlShortener.Domain.Entities.ApplicationUser", "Editor")
+                        .WithMany()
+                        .HasForeignKey("EditorId");
+
+                    b.Navigation("Editor");
                 });
 
             modelBuilder.Entity("UrlShortener.Domain.Entities.ShortenedUrlEntity", b =>

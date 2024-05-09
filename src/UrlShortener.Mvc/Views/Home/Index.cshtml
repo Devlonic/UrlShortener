@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    @if(ViewBag.LinkBroken??false) {
+        <p class="text-warning">Desired link <b>@ViewBag.Link</b> is not exists, broken or deleted</p>
+    }
+    <!--react mount point-->
+    <div id="root-react-shortings"></div>
+</div>

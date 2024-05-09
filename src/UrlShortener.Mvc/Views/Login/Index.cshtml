@@ -1,0 +1,66 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    <div class="row">
+        <div class="col w-50">
+            <form asp-action="SignIn" asp-controller="Login">
+                <div class="mb-3">
+                    <h2>Sign In</h2>
+                </div>
+                <div class="mb-3">
+                    <label for="email-input-sign-in" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email-input-sign-in" name="email">
+                </div>
+                <div class="mb-3">
+                    <label for="password-input-sign-in" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password-input-sign-in" name="password">
+                </div>
+                <button type="submit" class="btn btn-primary">Sign In</button>
+                <div class="mt-3">
+                    <h5 class="text-danger">@ViewBag.LoginError</h5>
+                </div>
+            </form>
+        </div>
+        <div class="col  w-50">
+            <form asp-action="SignUp" asp-controller="Login">
+                <div class="mb-3">
+                    <h2>Registration</h2>
+                </div>
+                <div class="mb-3">
+                    <label for="email-input-sign-up" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email-input-sign-up" name="email">
+                </div>
+                <div class="mb-3">
+                    <label for="username-input-sign-up" class="form-label">User name</label>
+                    <input type="text" class="form-control" id="username-input-sign-up" name="username">
+                </div>
+                <div class="mb-3">
+                    <label for="password-input-sign-up" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password-input-sign-up" name="password">
+                </div>
+                <div class="mb-3">
+                    <label for="password-repeat-input-sign-up" class="form-label">Repeat password</label>
+                    <input type="password" class="form-control" id="password-repeat-input-sign-up" name="repeatPassword">
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="set-admin-account" name="doesSetAdmin">
+                    <label class="form-check-label user-select-none" for="set-admin-account" >Get admin account</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+                <div class="mt-3">
+                    <h5 class="text-danger w-50">@ViewBag.RegistrationError</h5>
+                    @if ( ViewBag.ValidationErrors is not null) {
+                        <ul>
+                            @foreach ( var error in ViewBag.ValidationErrors ) {
+                                <li class="text-danger">
+                                    <h5>@error</h5>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+}

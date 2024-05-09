@@ -16,4 +16,18 @@ namespace UrlShortener.Persistence.Data.Configurations {
             #endregion
         }
     }
+
+    public class AboutEntityConfiguration : IEntityTypeConfiguration<AboutEntity> {
+        public void Configure(EntityTypeBuilder<AboutEntity> builder) {
+            #region Properties
+
+            builder.HasKey(e => e.Id);
+
+            builder.HasOne(e => e.Editor)
+                .WithMany()
+                .HasForeignKey(e => e.EditorId);
+
+            #endregion
+        }
+    }
 }

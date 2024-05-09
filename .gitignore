@@ -284,3 +284,5 @@ package-lock.json
 appsettings.production.json
 
 [Pp]ublic/[Uu]ploads/
+
+build/

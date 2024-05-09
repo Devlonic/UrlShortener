@@ -1,4 +1,15 @@
-﻿class AddNewReference extends React.Component {
+﻿function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(name + '=')) {
+            return cookie.substring(name.length + 1);
+        }
+    }
+    return null;
+}
+
+class AddNewReference extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -74,7 +85,10 @@ class ReferencesList extends React.Component {
 
         return (<>
             <div className="onLoad">
-                <AddNewReference onAdd={this.addRef}></AddNewReference>
+                {getCookie("Authentication") && <>
+                    <AddNewReference onAdd={this.addRef}></AddNewReference>
+                </>}
+
                 <table className="table">
                     <thead>
                         <tr>

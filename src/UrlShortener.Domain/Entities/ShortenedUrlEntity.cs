@@ -7,5 +7,7 @@ namespace UrlShortener.Domain.Entities {
 
         public ApplicationUser? Creator { get; set; }
         public int? CreatorId { get; set; }
+
+        public DateTime? CreatedAt { get; set; }
     }
 }
